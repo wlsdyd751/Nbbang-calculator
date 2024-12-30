@@ -7,6 +7,7 @@
         config.endpoint = localStorage.getItem("endpoint");
         config.bond = localStorage.getItem("bond");
         config.debtors = JSON.parse(localStorage.getItem("debtors"));
+        config.expenses = JSON.parse(localStorage.getItem("expenses"));
         config.configured = true;
     }
 </script>

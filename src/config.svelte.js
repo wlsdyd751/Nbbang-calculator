@@ -4,4 +4,5 @@ export const config = $state({
   endpoint: "",
   bond: "",
   debtors: [],
+  expenses: [],
 });

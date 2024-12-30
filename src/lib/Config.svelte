@@ -17,10 +17,18 @@
         config.debtors.splice(idx, 1);
     }
 
+    function addExpense() {
+        config.expenses.push("");
+    }
+    function deleteExpense(idx) {
+        config.expenses.splice(idx, 1);
+    }
+
     function save() {
         localStorage.setItem("endpoint", config.endpoint);
         localStorage.setItem("bond", config.bond);
         localStorage.setItem("debtors", JSON.stringify(config.debtors));
+        localStorage.setItem("expenses", JSON.stringify(config.expenses));
 
         config.show = false;
         config.configured = true;
@@ -57,6 +65,32 @@
                 bind:value={config.bond}
             />
             <br />
+            <table border="1">
+                <tbody>
+                    <tr>
+                        <th>비용</th>
+                    </tr>
+                    {#each config.expenses as expense, idx}
+                        <tr>
+                            <td>
+                                <input
+                                    type="text"
+                                    defaultValue={expense}
+                                    bind:value={config.expenses[idx]}
+                                />
+                            </td>
+                            <td>
+                                <button onclick={() => deleteExpense(idx)}>
+                                    X
+                                </button>
+                            </td>
+                        </tr>
+                    {/each}
+                    <tr>
+                        <td> <button onclick={addExpense}> + </button> </td>
+                    </tr>
+                </tbody>
+            </table>
             <table border="1">
                 <tbody>
                     <tr>

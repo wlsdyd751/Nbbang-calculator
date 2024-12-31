@@ -22,6 +22,7 @@
         });
         selectedGroupIdx = groups.length - 1;
     }
+    addGroup();
 
     function addItem() {
         groups[selectedGroupIdx].items.push({
@@ -29,21 +30,64 @@
             cost: 0,
         });
     }
+
+    let people = $state([]);
+    let N = $state(1);
+
+    function NChange(e) {
+        N = e.target.value;
+        console.log(N);
+
+        if (N - 1 > people.length) {
+            console.log(`people: ${people}`);
+            let pushed = false;
+            for (const debtor of config.debtors) {
+                console.log(`debtor: ${debtor.name}`);
+                if (!people.includes(debtor.name)) {
+                    console.log("pushed");
+                    people.push(debtor.name);
+                    pushed = true;
+                    break;
+                }
+            }
+
+            if (!pushed) {
+                N -= 1;
+            }
+        }
+
+        if (N < 1) {
+            N = 1;
+        }
+
+        if (N - 1 < people.length) {
+            people.pop();
+        }
+        e.target.value = N;
+    }
 </script>
 
 <main>
     <Config />
+    <label for="N">인원수</label>
+    <input type="number" id="N" onchange={NChange} defaultValue="1" />
     <table border="1">
         <tbody>
             <tr>
                 <th colspan="2"> </th>
-                <th> </th>
+                <th> me </th>
+                {#each { length: N - 1 }, i}
+                    <th>
+                        <Dropdown
+                            bind:value={people[i]}
+                            options={config.debtors.map((d) => d.name)}
+                        />
+                    </th>
+                {/each}
             </tr>
 
             {#each groups as group, idx}
                 <tr>
-                    <td colspan="2"> {group.name} </td>
-                    <td> </td>
                     <td
                         onclick={() => {
                             selectedGroupIdx = idx;
@@ -53,6 +97,11 @@
                     >
                         {group.name}
                     </td>
+                    {#each { length: N }, i}
+                        <td>
+                            <input type="checkbox" />
+                        </td>
+                    {/each}
                 </tr>
                 {#each group.items as item, idx}
                     <tr>

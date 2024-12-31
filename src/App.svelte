@@ -44,11 +44,20 @@
                 <tr>
                     <td colspan="2"> {group.name} </td>
                     <td> </td>
+                    <td
+                        onclick={() => {
+                            selectedGroupIdx = idx;
+                        }}
+                        colspan="2"
+                        class={idx == selectedGroupIdx ? "selected" : ""}
+                    >
+                        {group.name}
+                    </td>
                 </tr>
                 {#each group.items as item, idx}
                     <tr>
-                        <td colspan="2"> {item.name} </td>
-                        <td>
+                        <td colspan="2"> {group.name}-{item.name} </td>
+                        <td colspan={N}>
                             <input type="number" bind:value={item.cost} />
                         </td>
                     </tr>

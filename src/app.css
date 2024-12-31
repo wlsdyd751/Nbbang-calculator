@@ -97,3 +97,8 @@ button:focus-visible {
 .modal-body {
     background-color: #242424;
 }
+
+.selected {
+    background-color: antiquewhite;
+    color: #242424;
+}

@@ -11,8 +11,35 @@
         config.configured = true;
     }
 
+    let people = $state([]);
+    let N = $state(1);
+
     const groups = $state([]);
     let selectedGroupIdx = $state(0);
+    let subtotals = $derived(
+        groups.map((g) => g.items.reduce((acc, i) => acc + i.cost, 0)),
+    );
+    let selectedCnt = $derived(
+        groups.map((g) => g.checked.reduce((acc, c) => acc + (c ? 1 : 0), 0)),
+    );
+    let personalTotal = $derived.by(() => {
+        let res = [];
+        console.log(subtotals);
+        console.log(selectedCnt);
+        for (let i = 0; i < N; i++) {
+            let total = 0;
+            for (let gi = 0; gi < groups.length; gi++) {
+                if (!groups[gi].checked[i]) continue;
+
+                total += subtotals[gi] / selectedCnt[gi];
+            }
+            res.push(total);
+        }
+        return res;
+    });
+
+    $inspect(personalTotal);
+    $inspect(groups);
 
     function addGroup() {
         groups.push({
@@ -31,20 +58,13 @@
         });
     }
 
-    let people = $state([]);
-    let N = $state(1);
-
     function NChange(e) {
         N = e.target.value;
-        console.log(N);
 
         if (N - 1 > people.length) {
-            console.log(`people: ${people}`);
             let pushed = false;
             for (const debtor of config.debtors) {
-                console.log(`debtor: ${debtor.name}`);
                 if (!people.includes(debtor.name)) {
-                    console.log("pushed");
                     people.push(debtor.name);
                     pushed = true;
                     break;
@@ -86,31 +106,56 @@
                 {/each}
             </tr>
 
-            {#each groups as group, idx}
+            {#each groups as group, groupIdx}
                 <tr>
                     <td
                         onclick={() => {
-                            selectedGroupIdx = idx;
+                            selectedGroupIdx = groupIdx;
                         }}
                         colspan="2"
-                        class={idx == selectedGroupIdx ? "selected" : ""}
+                        class={groupIdx == selectedGroupIdx ? "selected" : ""}
                     >
                         {group.name}
                     </td>
                     {#each { length: N }, i}
                         <td>
-                            <input type="checkbox" />
+                            <input
+                                type="checkbox"
+                                bind:checked={groups[groupIdx].checked[i]}
+                            />
                         </td>
                     {/each}
                 </tr>
-                {#each group.items as item, idx}
+                {#each group.items as item, itemIdx}
                     <tr>
-                        <td colspan="2"> {group.name}-{item.name} </td>
+                        <td
+                            onclick={() => {
+                                selectedGroupIdx = groupIdx;
+                            }}
+                            class={groupIdx == selectedGroupIdx
+                                ? "selected"
+                                : ""}
+                        >
+                            {group.name}
+                        </td>
+                        <td> {item.name} </td>
                         <td colspan={N}>
                             <input type="number" bind:value={item.cost} />
                         </td>
                     </tr>
                 {/each}
+                <tr>
+                    <td
+                        onclick={() => {
+                            selectedGroupIdx = groupIdx;
+                        }}
+                        colspan="2"
+                        class={groupIdx == selectedGroupIdx ? "selected" : ""}
+                    >
+                        그룹 소계
+                    </td>
+                    <td colspan={N}> {subtotals[groupIdx]} </td>
+                </tr>
             {/each}
 
             <tr>
@@ -120,7 +165,11 @@
                 <td>
                     <button onclick={addItem}> 항목+ </button>
                 </td>
+                {#each { length: N }, i}
+                    <td> {personalTotal[i]} </td>
+                {/each}
             </tr>
         </tbody>
     </table>
+    <button> 후잉 업로드 </button>
 </main>

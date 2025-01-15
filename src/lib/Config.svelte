@@ -24,6 +24,13 @@
         config.expenses.splice(idx, 1);
     }
 
+    function addAsset() {
+        config.assets.push("");
+    }
+    function deleteAsset(idx) {
+        config.assets.splice(idx, 1);
+    }
+
     function save() {
         localStorage.setItem("endpoint", config.endpoint);
         localStorage.setItem("bond", config.bond);
@@ -88,6 +95,32 @@
                     {/each}
                     <tr>
                         <td> <button onclick={addExpense}> + </button> </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table border="1">
+                <tbody>
+                    <tr>
+                        <th>자산</th>
+                    </tr>
+                    {#each config.assets as asset, idx}
+                        <tr>
+                            <td>
+                                <input
+                                    type="text"
+                                    defaultValue={asset}
+                                    bind:value={config.assets[idx]}
+                                />
+                            </td>
+                            <td>
+                                <button onclick={() => deleteAsset(idx)}>
+                                    X
+                                </button>
+                            </td>
+                        </tr>
+                    {/each}
+                    <tr>
+                        <td> <button onclick={addAsset}> + </button> </td>
                     </tr>
                 </tbody>
             </table>

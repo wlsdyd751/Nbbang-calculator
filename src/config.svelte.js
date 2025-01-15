@@ -5,5 +5,5 @@ export const config = $state({
   bond: "",
   debtors: [],
   expenses: [],
-  credits: [],
+  assets: [],
 });

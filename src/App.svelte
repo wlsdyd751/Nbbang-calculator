@@ -8,7 +8,7 @@
         config.bond = localStorage.getItem("bond");
         config.debtors = JSON.parse(localStorage.getItem("debtors"));
         config.expenses = JSON.parse(localStorage.getItem("expenses"));
-        config.credits = JSON.parse(localStorage.getItem("credits"));
+        config.assets = JSON.parse(localStorage.getItem("credits"));
         config.configured = true;
     }
 
@@ -162,7 +162,7 @@
     왼쪽
     <Dropdown bind:value={selectedExpense} options={config.expenses} />
     오른쪽
-    <Dropdown bind:value={selectedCredit} options={config.credits} />
+    <Dropdown bind:value={selectedCredit} options={config.assets} />
     <br />
     <label for="item"> 아이템 </label>
     <input type="text" id="item" placeholder="아이템" bind:value={item} />

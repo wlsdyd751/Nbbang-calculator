@@ -8,7 +8,7 @@
         config.bond = localStorage.getItem("bond");
         config.debtors = JSON.parse(localStorage.getItem("debtors"));
         config.expenses = JSON.parse(localStorage.getItem("expenses"));
-        config.assets = JSON.parse(localStorage.getItem("credits"));
+        config.assets = JSON.parse(localStorage.getItem("assets"));
         config.configured = true;
     }
 

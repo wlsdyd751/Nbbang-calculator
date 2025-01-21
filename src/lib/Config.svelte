@@ -36,6 +36,7 @@
         localStorage.setItem("bond", config.bond);
         localStorage.setItem("debtors", JSON.stringify(config.debtors));
         localStorage.setItem("expenses", JSON.stringify(config.expenses));
+        localStorage.setItem("assets", JSON.stringify(config.assets));
 
         config.show = false;
         config.configured = true;

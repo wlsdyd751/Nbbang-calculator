@@ -49,13 +49,9 @@
             for (let i = 0; i < N; i++) {
                 indexes.push(i);
             }
-            console.log("idxx");
-            console.log(indexes);
             indexes.sort((i, j) => {
                 return p[i] - a[i] - p[j] + a[j];
             });
-            console.log("idxsorted");
-            console.log(indexes);
 
             for (let i = 0; i < subtotals[gi] % selectedCnt[gi]; i++) {
                 p[indexes[i]] += 1;
@@ -124,7 +120,6 @@
                     let debit = config.debtors.find(
                         (d) => d.name === name,
                     ).debit;
-                    console.log(`debit: //${debit}//`);
 
                     if (debit === "") {
                         left = config.bond;
@@ -141,8 +136,6 @@
                     right,
                     memo,
                 };
-                console.log("data");
-                console.log(JSON.stringify(data));
 
                 fetch(config.endpoint, {
                     method: "POST",
